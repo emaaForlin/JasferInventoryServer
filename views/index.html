@@ -42,31 +42,29 @@
             </div>
         </nav>
     </main>
-    <div class="container text-start" style="margin: 5px;box-shadow: 0px 0px;">
-        <div class="table-responsive">
-            <table class="table" id="prod_table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>SKU</th>
-                        <th>Precio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{ range $product := .data }}
-                    <tr class="product">
-                        <td>{{.ID}}</td>
-                        <td>{{.Name}}</td>
-                        <td>{{.Description}}</td>
-                        <td>{{.SKU}}</td>
-                        <td>${{.Price}}</td>
-                    </tr>
-                    {{ end }}
-                </tbody>
-            </table>
-        </div>
+    <div class="table-responsive">
+        <table class="table" id="prod_table">
+            <thead>
+                <tr id="table-head">
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>SKU</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range $product := .data }}
+                <tr class="product">
+                    <td>{{.ID}}</td>
+                    <td>{{.Name}}</td>
+                    <td>{{.Description}}</td>
+                    <td>{{.SKU}}</td>
+                    <td>${{.Price}}</td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
     </div>
     <script src="assets/js/search.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>

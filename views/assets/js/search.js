@@ -3,7 +3,9 @@ function searchTable() {
     input = document.getElementById("searchbar");
     filter = input.value.toLowerCase();
     table = document.getElementById("prod_table");
-    tr = table.getElementsByTagName("tr");
+    //tr = table.getElementsByTagName("tr");
+    tr = table.getElementsByClassName("product");
+    
     for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td");
         for (j = 0; j < td.length; j++) {
