@@ -111,4 +111,13 @@ var productList = []*Product{
 		CreatedOn:   "",
 		UpdatedOn:   "",
 	},
+	&Product{
+		ID:          3,
+		Name:        "esspresso",
+		Description: "Short and strong coffee without milk",
+		Price:       1.99,
+		SKU:         "efg567",
+		CreatedOn:   "",
+		UpdatedOn:   "",
+	},
 }

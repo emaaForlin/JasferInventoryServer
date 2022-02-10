@@ -21,16 +21,24 @@ func main() {
 
 	router := gin.Default()
 
-	router.Static("/assets/bootstrap", "./views/assets/bootstrap")
-	router.Static("/assets/js", "./views/assets/js")
+	router.Static("/assets", "./views/assets")
+//	router.Static("/assets/fonts", "./views/assets/fonts")
+//	router.Static("/assets/js", "./views/assets/js/*")
 
-	router.LoadHTMLFiles("./views/index.html", "./views/edit.html")
+	router.LoadHTMLFiles("./views/index.html")
 	router.GET("/", index.Render)
 
-
+	// retrieve products
 	router.GET("/products", productHandler.GetProducts)
+
+	// edit products
 	router.PUT("/products/:id", productHandler.UpdateProducts)
+
+	// add products
 	router.POST("/products", productHandler.AddProducts)
+
+	// search products
+	//router.POST("/search")
 	
 	s := &http.Server{
 		Addr: ":9090",

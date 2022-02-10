@@ -32,15 +32,19 @@
                         <li class="nav-item"><a class="nav-link" href="#" style="color: var(--bs-white);">Link 3</a></li>
                     </ul>
                     <form class="me-auto search-form" target="_self">
-                        <div class="d-flex align-items-center"><label class="form-label d-flex mb-0" for="search-field"><i class="fa fa-search"></i></label><input class="form-control search-field" type="search" id="search-field" name="search"></div>
-                    </form><a class="btn btn-light action-button" role="button" href="#">Buscar</a>
+                        <div class="d-flex align-items-center">   
+                            <label class="form-label d-flex mb-0" for="search"></label> 
+                        </div>
+                    </form>
+                    <i class="fa fa-search" style="margin: 5px"></i>
+                    <input class="search-field" id="searchbar" onkeyup="searchTable()" placeholder="Busca productos" type="search" name="search" style="margin-left: 10px">
                 </div>
             </div>
         </nav>
     </main>
-    <div class="container">
+    <div class="container text-start" style="margin: 5px;box-shadow: 0px 0px;">
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" id="prod_table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -52,18 +56,19 @@
                 </thead>
                 <tbody>
                     {{ range $product := .data }}
-                    <tr>
+                    <tr class="product">
                         <td>{{.ID}}</td>
                         <td>{{.Name}}</td>
                         <td>{{.Description}}</td>
                         <td>{{.SKU}}</td>
-                        <td>{{.Price}}</td>
+                        <td>${{.Price}}</td>
                     </tr>
                     {{ end }}
                 </tbody>
             </table>
         </div>
     </div>
+    <script src="assets/js/search.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
     <script src="assets/js/theme.js"></script>
