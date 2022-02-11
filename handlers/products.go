@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"strconv"
 	"github.com/emaaForlin/JasferInventorySoftware/data"
+	//"github.com/emaaForlin/JasferInventorySoftware/database"
+	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
 )
 
@@ -20,8 +22,13 @@ func NewProduct(l *log.Logger) *Products {
 func (p *Products) GetProducts(c *gin.Context) {
 	p.l.Println("Handle GET Products")
 
+	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
+	if !ok {
+		panic("error connection DB")
+	}
+
 	// fetch products from the data store
-	lp := data.GetProducts()
+	lp := data.GetProducts(dbClient)
 	// show the products as output
 	c.IndentedJSON(http.StatusOK, lp)
 }
@@ -29,13 +36,18 @@ func (p *Products) GetProducts(c *gin.Context) {
 func (p *Products) AddProducts(c *gin.Context) {
 	p.l.Println("Handle POST products")
 
-	prod := &data.Product{}
+	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
+	if !ok {
+		panic("error connection DB")
+	}
+
+	prod := &data.Product{} 
 	err := prod.FromJSON(c.Request.Body)
 	if err != nil {
 		http.Error(c.Writer, "Unable to unmarshal json", http.StatusBadRequest)
 		return
 	}
-	data.AddProduct(prod)
+	data.AddProduct(prod, dbClient)
 }
 
 func (p *Products) UpdateProducts(c *gin.Context) {

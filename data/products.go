@@ -2,27 +2,45 @@ package data
 
 import (
 	"encoding/json"
-	"strings"
+	//"strings"
+	//"github.com/emaaForlin/JasferInventorySoftware/database"
 	"fmt"
 	"io"
 	"time"
+	"gorm.io/gorm"
 )
 
-
+/*
 type Product struct {
-	ID          int     `json:"id"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Price       float32 `json:"price"`
-	SKU         string  `json:"sku"`
-	CreatedOn   string  `json:"createdOn"`
-	UpdatedOn   string  `json:""`
+	gorm.Model
+	ID          int     	`json:"id"`
+	Name        string  	`json:"name"`
+	Description string  	`json:"description"`
+	Price       float32 	`json:"price"`
+	SKU         string  	`json:"sku"`
+	CreatedAt   time.Time  	`json:"-"`
+	UpdatedAt   time.Time  	`json:"-"`
+	DeletedAt 	time.Time	`json:"-"`
+
+}
+*/
+type Product struct {
+	gorm.Model
+	ID			int			`gorm:"primaryKey"			json: "id"`
+	Name        string		`gorm:"type:varchar(64)"	json: "name"`
+	Description string		`gorm:"type:varchar(64)"	json: "description"`
+	Price       float32		`gorm:"type:float"			json: "price"`
+	SKU         string 		`gorm:"type:varchar(8)"		json: "sku"`
+	CreatedAt   time.Time	`gorm:"type:datetime"		json: "-"`
+	UpdatedAt   time.Time	`gorm:"type:datetime"		json: "-"`
+//	DeletedAt 	time.Time	`gorm:"type:datetime"		json: "-"`
 }
 
 type Products []*Product
 
-// ####################################################
 
+
+// ####################################################
 // for encoding json
 
 func (p *Products) ToJSON(w io.Writer) error {
@@ -34,18 +52,31 @@ func (p *Product) FromJSON(r io.Reader) error {
 	e := json.NewDecoder(r)
 	return e.Decode(p)
 }
-
 // ####################################################
 
-func GetProducts() Products {
+
+func GetProducts(db *gorm.DB) Products {
+	prods := &Product{}
+	db.Find(prods)
+
 	return productList
 }
 
-func AddProduct(p *Product) {
+func AddProduct(p *Product, db *gorm.DB) {
 	p.ID = getNextID()
-	 p.SKU = generateSKU(p.ID, "AA", "BB")
-	p.CreatedOn = time.Now().UTC().String()
-
+	p.SKU = generateSKU(p.ID, "AA", "BB")
+	p.CreatedAt = time.Now().UTC()//.String()
+	
+	prod := Product{
+		ID: p.ID,
+		Name: p.Name,
+		Description: p.Description,
+		Price: p.Price,
+		SKU: p.SKU,
+		CreatedAt: p.CreatedAt,
+		UpdatedAt: p.UpdatedAt,
+	}
+	db.Create(&prod)
 	// append to products list
 	productList = append(productList, p)
 }
@@ -56,15 +87,15 @@ func UpdateProduct(id int, p *Product) error {
 		return err
 	}
 	p.ID = id
-	p.CreatedOn = oldProd.CreatedOn
-	p.UpdatedOn = time.Now().UTC().String()
+	p.CreatedAt = oldProd.CreatedAt
+	p.UpdatedAt = time.Now().UTC()//.String()
 	productList[pos] = p
 	return nil
 }
 
 func getNextID() int {
-	lastProd := productList[len(productList)-1]
-	return lastProd.ID + 1
+	//lastProd := productList[len(productList)-1]
+	return len(productList) + 1
 }
 
 func generateSKU(id int, prefix, suffix string) string {
@@ -82,7 +113,7 @@ func findProduct(id int) (*Product, int, error) {
 	}
 	return nil, -1, ErrProductNotFound
 }
-
+/*
 func searchBarProduct(desc string) (*Product, int, error){
 	for i, p := range productList {
 		if strings.Contains(p.Description, desc) || strings.Contains(p.Description, desc) {
@@ -91,16 +122,14 @@ func searchBarProduct(desc string) (*Product, int, error){
 	}
 	return nil, -1, ErrProductNotFound
 }
-
-var productList = []*Product{
+*/
+var productList = []*Product{}/*
 	&Product{
 		ID:          1,
 		Name:        "Jean",
 		Description: "Talle 42",
 		Price:       2000,
 		SKU:         "CN422000",
-		CreatedOn:   "",
-		UpdatedOn:   "",
 	},
 	&Product{
 		ID:          2,
@@ -108,8 +137,6 @@ var productList = []*Product{
 		Description: "Talle M",
 		Price:       1500,
 		SKU:         "MCMR1500",
-		CreatedOn:   "",
-		UpdatedOn:   "",
 	},
 	&Product{
 		ID:          3,
@@ -117,8 +144,6 @@ var productList = []*Product{
 		Description: "Talle S",
 		Price:       1250,
 		SKU:         "SDS1250",
-		CreatedOn:   "",
-		UpdatedOn:   "",
 	},
 	&Product{
 		ID:          4,
@@ -126,8 +151,6 @@ var productList = []*Product{
 		Description: "Talle 44",
 		Price:       2100,
 		SKU:         "CN442100",
-		CreatedOn:   "",
-		UpdatedOn:   "",
 	},
 	&Product{
 		ID:          5,
@@ -135,8 +158,6 @@ var productList = []*Product{
 		Description: "Talle L",
 		Price:       1750,
 		SKU:         "MCL1500",
-		CreatedOn:   "",
-		UpdatedOn:   "",
 	},
 	&Product{
 		ID:          6,
@@ -144,7 +165,6 @@ var productList = []*Product{
 		Description: "Talle M",
 		Price:       1350,
 		SKU:         "SDM1250",
-		CreatedOn:   "",
-		UpdatedOn:   "",
 	},
 }
+*/
