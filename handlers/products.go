@@ -21,7 +21,9 @@ func NewProduct(l *log.Logger) *Products {
 // getProducts return the products from the data store
 func (p *Products) GetProducts(c *gin.Context) {
 	p.l.Println("Handle GET Products")
+	// obtain db client
 
+	// obtain db client
 	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
 	if !ok {
 		panic("error connection DB")
@@ -35,7 +37,8 @@ func (p *Products) GetProducts(c *gin.Context) {
 
 func (p *Products) AddProducts(c *gin.Context) {
 	p.l.Println("Handle POST products")
-
+	
+	// obtain db client
 	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
 	if !ok {
 		panic("error connection DB")
@@ -52,17 +55,23 @@ func (p *Products) AddProducts(c *gin.Context) {
 
 func (p *Products) UpdateProducts(c *gin.Context) {
 	p.l.Println("Handle PUT products")
+	
+	// obtain db client
+	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
+	if !ok {
+		panic("error connection DB")
+	}
+
 	id, _ := strconv.Atoi(c.Param("id"))
 
 	prod := &data.Product{}
 	err := prod.FromJSON(c.Request.Body)
-
 	if err != nil {
 		http.Error(c.Writer, "Unable to unmarshal json", http.StatusBadRequest)
 		p.l.Println(err)
 	}
 
-	err = data.UpdateProduct(id, prod)
+	err = data.UpdateProduct(id, prod, dbClient)
 	if err == data.ErrProductNotFound {
 		http.Error(c.Writer, "Product not found", http.StatusNotFound)
 		return

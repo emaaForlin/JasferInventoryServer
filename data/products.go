@@ -10,20 +10,6 @@ import (
 	"gorm.io/gorm"
 )
 
-/*
-type Product struct {
-	gorm.Model
-	ID          int     	`json:"id"`
-	Name        string  	`json:"name"`
-	Description string  	`json:"description"`
-	Price       float32 	`json:"price"`
-	SKU         string  	`json:"sku"`
-	CreatedAt   time.Time  	`json:"-"`
-	UpdatedAt   time.Time  	`json:"-"`
-	DeletedAt 	time.Time	`json:"-"`
-
-}
-*/
 type Product struct {
 	gorm.Model
 	ID			int			`gorm:"primaryKey"			json: "id"`
@@ -55,15 +41,16 @@ func (p *Product) FromJSON(r io.Reader) error {
 // ####################################################
 
 
-func GetProducts(db *gorm.DB) Products {
-	prods := &Product{}
+func GetProducts(db *gorm.DB) *Products {
+	prods := &Products{}
 	db.Find(prods)
-
-	return productList
+	//db.Model(prods).Find(&Product{})
+	return prods
 }
 
 func AddProduct(p *Product, db *gorm.DB) {
-	p.ID = getNextID()
+	p.ID = getNextID(db)
+
 	p.SKU = generateSKU(p.ID, "AA", "BB")
 	p.CreatedAt = time.Now().UTC()//.String()
 	
@@ -77,11 +64,10 @@ func AddProduct(p *Product, db *gorm.DB) {
 		UpdatedAt: p.UpdatedAt,
 	}
 	db.Create(&prod)
-	// append to products list
-	productList = append(productList, p)
 }
 
-func UpdateProduct(id int, p *Product) error {
+
+func UpdateProduct(id int, p *Product, db *gorm.DB) error {
 	oldProd, pos, err := findProduct(id)
 	if err != nil {
 		return err
@@ -93,9 +79,10 @@ func UpdateProduct(id int, p *Product) error {
 	return nil
 }
 
-func getNextID() int {
-	//lastProd := productList[len(productList)-1]
-	return len(productList) + 1
+func getNextID(db *gorm.DB) int {
+	prod := &Product{}
+	db.Last(prod)
+	return prod.ID + 1
 }
 
 func generateSKU(id int, prefix, suffix string) string {
@@ -123,7 +110,7 @@ func searchBarProduct(desc string) (*Product, int, error){
 	return nil, -1, ErrProductNotFound
 }
 */
-var productList = []*Product{}/*
+var productList = []*Product{} /*
 	&Product{
 		ID:          1,
 		Name:        "Jean",

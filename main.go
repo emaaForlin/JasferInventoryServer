@@ -48,7 +48,6 @@ func main() {
 		 panic(err)
 	}
 
-
 	// create the index page view
 	//index := views.NewView(l, "index.html", data.GetProducts())
 
