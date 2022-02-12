@@ -24,7 +24,7 @@ type Product struct {
 
 type Products []*Product
 
-
+var productList []*Product
 
 // ####################################################
 // for encoding json
@@ -41,16 +41,14 @@ func (p *Product) FromJSON(r io.Reader) error {
 // ####################################################
 
 
-func GetProducts(db *gorm.DB) *Products {
-	prods := &Products{}
-	db.Find(prods)
-	//db.Model(prods).Find(&Product{})
-	return prods
+func GetProducts(db *gorm.DB) []*Product {
+	db.Find(&productList)
+
+	return productList
 }
 
 func AddProduct(p *Product, db *gorm.DB) {
 	p.ID = getNextID(db)
-
 	p.SKU = generateSKU(p.ID, "AA", "BB")
 	p.CreatedAt = time.Now().UTC()//.String()
 	
@@ -81,6 +79,15 @@ func UpdateProduct(id int, p *Product, db *gorm.DB) error {
 
 func getNextID(db *gorm.DB) int {
 	prod := &Product{}
+	var p []Product
+	db.Find(&p)
+
+	for i:=1;i<len(p);i++ {
+		if i != p[i-1].ID {
+			fmt.Printf("HHHHHH i: %d ID: %d", i, p[i].ID)
+			return i
+		}
+	}
 	db.Last(prod)
 	return prod.ID + 1
 }
@@ -110,7 +117,7 @@ func searchBarProduct(desc string) (*Product, int, error){
 	return nil, -1, ErrProductNotFound
 }
 */
-var productList = []*Product{} /*
+/* var productList = []*Product{} 
 	&Product{
 		ID:          1,
 		Name:        "Jean",
