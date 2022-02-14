@@ -81,3 +81,20 @@ func (p *Products) UpdateProducts(c *gin.Context) {
 		return
 	}
 }
+
+func (p *Products) DeleteProducts(c *gin.Context) {
+	p.l.Println("Handle DELETE product")
+	
+	// obtain db client
+	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
+	if !ok {
+		panic("error connection DB")
+	}
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	err := data.DeleteProduct(id, dbClient)
+	if err != nil {
+		http.Error(c.Writer, "Unable to delete unexistent product", http.StatusNotFound)
+		p.l.Println(err)
+	}
+}

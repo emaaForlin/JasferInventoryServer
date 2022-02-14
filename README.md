@@ -2,7 +2,13 @@
 
 ### Changelog
 
+#### All CRUD operations can be performed
+- Delete products `DELETE /products/{id}` 
 - Update products `PUT /products/{id}`
+- Add products `POST /products`
+- Retrieve products `GET /products`
+
+#### Other features
 - Added reusing deleted IDs
 - Use a database
 - Add products `POST /products`

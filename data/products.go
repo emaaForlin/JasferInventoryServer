@@ -83,13 +83,21 @@ func UpdateProduct(id int, p *Product, db *gorm.DB) error {
 	return fmt.Errorf("All values are needed")
 }
 
+func DeleteProduct(id int, db *gorm.DB) error {
+	_, _, err := findProduct(id, db)
+	if err != nil {
+		return err
+	}
+	db.Unscoped().Delete(&Product{}, id)
+	return nil
+}
 
 func getNextID(db *gorm.DB) int {
 	prod := &Product{}
 	var p []Product
 	db.Find(&p)
 
-	for i:=1;i<len(p);i++ {
+	for i:=1;i<len(productList);i++ {
 		if i != p[i-1].ID {
 			return i
 		}

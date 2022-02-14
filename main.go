@@ -22,7 +22,6 @@ func apiMiddleWare(db *gorm.DB) gin.HandlerFunc {
     }
 }
 
-
 func main() {
 	l := log.New(os.Stdout, "JISoftware-prototype: ", log.LstdFlags)
 
@@ -66,6 +65,8 @@ func main() {
 	router.PUT("/products/:id", productHandler.UpdateProducts)
 	// add products
 	router.POST("/products", productHandler.AddProducts)
+	// delete products
+	router.DELETE("/products/:id", productHandler.DeleteProducts)
 
 
 	// all the stuff needed to start serving the page are down here
