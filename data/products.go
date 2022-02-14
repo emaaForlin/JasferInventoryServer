@@ -61,7 +61,9 @@ func AddProduct(p *Product, db *gorm.DB) {
 		CreatedAt: p.CreatedAt,
 		UpdatedAt: p.UpdatedAt,
 	}
-	db.Create(&prod)
+	if prod.ID != 0 && prod.Name != "" && prod.Price != 0 && prod.SKU != "" {
+		db.Create(&prod)
+	}
 }
 
 
@@ -84,7 +86,6 @@ func getNextID(db *gorm.DB) int {
 
 	for i:=1;i<len(p);i++ {
 		if i != p[i-1].ID {
-			fmt.Printf("HHHHHH i: %d ID: %d", i, p[i].ID)
 			return i
 		}
 	}
