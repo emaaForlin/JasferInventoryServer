@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 	"github.com/emaaForlin/JasferInventorySoftware/data"
-	//"github.com/emaaForlin/JasferInventorySoftware/database"
 	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
 )

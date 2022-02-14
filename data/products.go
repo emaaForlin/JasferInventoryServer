@@ -2,8 +2,6 @@ package data
 
 import (
 	"encoding/json"
-	//"strings"
-	//"github.com/emaaForlin/JasferInventorySoftware/database"
 	"fmt"
 	"io"
 	"time"
@@ -43,14 +41,13 @@ func (p *Product) FromJSON(r io.Reader) error {
 
 func GetProducts(db *gorm.DB) []*Product {
 	db.Find(&productList)
-
 	return productList
 }
 
 func AddProduct(p *Product, db *gorm.DB) {
 	p.ID = getNextID(db)
 	p.SKU = generateSKU(p.ID, "AA", "BB")
-	p.CreatedAt = time.Now().UTC()//.String()
+	p.CreatedAt = time.Now().UTC()
 	
 	prod := Product{
 		ID: p.ID,
@@ -88,6 +85,7 @@ func DeleteProduct(id int, db *gorm.DB) error {
 	if err != nil {
 		return err
 	}
+	// this deletes permanently the entry
 	db.Unscoped().Delete(&Product{}, id)
 	return nil
 }
@@ -107,6 +105,7 @@ func getNextID(db *gorm.DB) int {
 }
 
 func generateSKU(id int, prefix, suffix string) string {
+	// I need to improve this
 	sku := fmt.Sprintf("%s0%d%s", prefix, id, suffix)
 	return sku
 }
