@@ -2,6 +2,7 @@
 
 ### Changelog
 
+- Update products `PUT /products/{id}`
 - Added reusing deleted IDs
 - Use a database
 - Add products `POST /products`

@@ -66,18 +66,23 @@ func AddProduct(p *Product, db *gorm.DB) {
 	}
 }
 
-
 func UpdateProduct(id int, p *Product, db *gorm.DB) error {
-	oldProd, pos, err := findProduct(id)
+	oldProd, pos, err := findProduct(id, db)
 	if err != nil {
 		return err
 	}
 	p.ID = id
 	p.CreatedAt = oldProd.CreatedAt
-	p.UpdatedAt = time.Now().UTC()//.String()
-	productList[pos] = p
-	return nil
+	p.UpdatedAt = time.Now().UTC()
+	
+	if p.ID != 0 && p.Name != "" && p.Price != 0 && p.SKU != "" && p.CreatedAt != p.UpdatedAt {
+		db.Save(&p)
+		productList[pos] = p
+		return nil	
+	}
+	return fmt.Errorf("All values are needed")
 }
+
 
 func getNextID(db *gorm.DB) int {
 	prod := &Product{}
@@ -100,66 +105,12 @@ func generateSKU(id int, prefix, suffix string) string {
 
 var ErrProductNotFound = fmt.Errorf("Product not found")
 
-func findProduct(id int) (*Product, int, error) {
-	for i, p := range productList {
+func findProduct(id int, db *gorm.DB) (*Product, int, error) {
+	prods := GetProducts(db)
+	for i, p := range prods {
 		if p.ID == id {
 			return p, i, nil
 		}
 	}
 	return nil, -1, ErrProductNotFound
 }
-/*
-func searchBarProduct(desc string) (*Product, int, error){
-	for i, p := range productList {
-		if strings.Contains(p.Description, desc) || strings.Contains(p.Description, desc) {
-			fmt.Println(p, i, nil)
-		}
-	}
-	return nil, -1, ErrProductNotFound
-}
-*/
-/* var productList = []*Product{} 
-	&Product{
-		ID:          1,
-		Name:        "Jean",
-		Description: "Talle 42",
-		Price:       2000,
-		SKU:         "CN422000",
-	},
-	&Product{
-		ID:          2,
-		Name:        "Remera manga corta",
-		Description: "Talle M",
-		Price:       1500,
-		SKU:         "MCMR1500",
-	},
-	&Product{
-		ID:          3,
-		Name:        "Short depor",
-		Description: "Talle S",
-		Price:       1250,
-		SKU:         "SDS1250",
-	},
-	&Product{
-		ID:          4,
-		Name:        "Jean",
-		Description: "Talle 44",
-		Price:       2100,
-		SKU:         "CN442100",
-	},
-	&Product{
-		ID:          5,
-		Name:        "Remera manga corta",
-		Description: "Talle L",
-		Price:       1750,
-		SKU:         "MCL1500",
-	},
-	&Product{
-		ID:          6,
-		Name:        "Short depor",
-		Description: "Talle M",
-		Price:       1350,
-		SKU:         "SDM1250",
-	},
-}
-*/
