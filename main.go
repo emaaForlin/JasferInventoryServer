@@ -49,14 +49,18 @@ func main() {
 	router := gin.Default()
 	router.Use(apiMiddleWare(client))
 	
+	router.LoadHTMLFiles("./templates/index.html")
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
 	// retrieve products
-	router.GET("/", productHandler.GetProducts)
+	router.GET("/products", productHandler.GetProducts)
 	// edit products
-	router.PUT("/:id", productHandler.UpdateProducts)
+	router.PUT("/products/:id", productHandler.UpdateProducts)
 	// add products
-	router.POST("/", productHandler.AddProducts)
+	router.POST("/products", productHandler.AddProducts)
 	// delete products
-	router.DELETE("/:id", productHandler.DeleteProducts)
+	router.DELETE("/products/:id", productHandler.DeleteProducts)
 
 
 	// all the stuff needed to start serving the page are down here
