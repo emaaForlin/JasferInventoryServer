@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/emaaForlin/JasferInventorySoftware/handlers"
 	"github.com/emaaForlin/JasferInventorySoftware/database"
-//	"github.com/emaaForlin/JasferInventorySoftware/views"
 	"gorm.io/gorm"
 	"strconv"
 )
@@ -24,7 +23,6 @@ func apiMiddleWare(db *gorm.DB) gin.HandlerFunc {
 
 func main() {
 	l := log.New(os.Stdout, "JISoftware-prototype: ", log.LstdFlags)
-
 	//create the product handler
 	productHandler := handlers.NewProduct(l)
 	
@@ -47,18 +45,10 @@ func main() {
 		 panic(err)
 	}
 
-	// create the index page view
-	//index := views.NewView(l, "index.html", data.GetProducts())
-
 	// initialize gin router
 	router := gin.Default()
 	router.Use(apiMiddleWare(client))
-	// load static templates
-	//router.Static("/assets", "./views/assets")
-	//router.LoadHTMLFiles("./views/index.html")
 	
-	// render the index
-	//router.GET("/", index.Render)
 	// retrieve products
 	router.GET("/products", productHandler.GetProducts)
 	// edit products
