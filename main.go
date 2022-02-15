@@ -49,10 +49,6 @@ func main() {
 	router := gin.Default()
 	router.Use(apiMiddleWare(client))
 	
-	router.LoadHTMLFiles("./templates/index.html")
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", nil)
-	})
 	// retrieve products
 	router.GET("/products", productHandler.GetProducts)
 	// edit products
