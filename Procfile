@@ -1,1 +1,1 @@
-web: DB_HOST=6.tcp.ngrok.io DB_PORT=17373 DB_USER=Jasfer DB_PASS=secretpass DB_NAME=JIS bin/JasferInventoryServer
+web: DB_HOST=$DB_HOST DB_PORT=$DB_PORT DB_USER=$DB_USER DB_PASS=$DB_PASS DB_NAME=$DB_NAME bin/JasferInventoryServer

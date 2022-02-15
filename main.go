@@ -50,13 +50,13 @@ func main() {
 	router.Use(apiMiddleWare(client))
 	
 	// retrieve products
-	router.GET("/products", productHandler.GetProducts)
+	router.GET("/", productHandler.GetProducts)
 	// edit products
-	router.PUT("/products/:id", productHandler.UpdateProducts)
+	router.PUT("/:id", productHandler.UpdateProducts)
 	// add products
-	router.POST("/products", productHandler.AddProducts)
+	router.POST("/", productHandler.AddProducts)
 	// delete products
-	router.DELETE("/products/:id", productHandler.DeleteProducts)
+	router.DELETE("/:id", productHandler.DeleteProducts)
 
 
 	// all the stuff needed to start serving the page are down here
