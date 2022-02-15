@@ -8,8 +8,8 @@ import (
 	"os"
 	"os/signal"
 	"github.com/gin-gonic/gin"
-	"github.com/emaaForlin/JasferInventorySoftware/handlers"
-	"github.com/emaaForlin/JasferInventorySoftware/database"
+	"github.com/emaaForlin/JasferInventoryServer/handlers"
+	"github.com/emaaForlin/JasferInventoryServer/database"
 	"gorm.io/gorm"
 	"strconv"
 )

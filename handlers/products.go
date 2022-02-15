@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"github.com/emaaForlin/JasferInventorySoftware/data"
+	"github.com/emaaForlin/JasferInventoryServer/data"
 	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
 )
