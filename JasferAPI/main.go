@@ -78,9 +78,9 @@ func main() {
 	// show docs
 	router.GET("/docs", gin.WrapH(rm))
 	// edit products
-	router.PUT("/products/:id", productHandler.UpdateProducts)
+	router.PUT("/products/:id", productHandler.UpdateProduct)
 	// add products
-	router.POST("/products", productHandler.AddProducts)
+	router.POST("/products", productHandler.AddProduct)
 	// delete products
 	router.DELETE("/products/:id", productHandler.DeleteProduct)
 

@@ -1,6 +1,6 @@
-// Package classification of JasferInventoryAPI
+// Package classification of Products API
 //
-// Documentation for JasferInventoryAPI
+// Documentation for Products API
 //
 // Schemes: http
 // BasePath: /
@@ -22,27 +22,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// A list of products returns in the response
-// swagger:response productsResponse
-type productsResponseWrapper struct {
-	// All products in the system
-	// in: body
-	Body []data.Product
-}
-
-// swagger:parameters deleteProduct
-type productIDParameterWrapper struct {
-	// The ID of the product to delete from database
-	// in: path
-	// required: true
-	ID int	`json:"id"`
-}
-
-// swagger:response noContent
-type productNoContentWrapper struct {}
-
 type Products struct {
 	l *log.Logger
+}
+
+type GenericError struct {
+	Message string `json:"message"`
 }
 
 func NewProduct(l *log.Logger) *Products {
@@ -53,7 +38,6 @@ func NewProduct(l *log.Logger) *Products {
 // Returns a list of products
 // Responses:
 //	200: productsResponse
-
 // GetProducts return the products from the database
 func (p *Products) GetProducts(c *gin.Context) {
 	p.l.Println("Handle GET Products")
@@ -69,9 +53,17 @@ func (p *Products) GetProducts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, lp)
 }
 
-func (p *Products) AddProducts(c *gin.Context) {
-	p.l.Println("Handle POST products")
-	
+// swagger:route POST /products products createProducts
+// Create a new product
+//
+// Responses:
+//	200: productsResponse
+//	501: errorResponse 
+
+// AddProducts adds a new product to the database
+func (p *Products) AddProduct(c *gin.Context) {
+	p.l.Printf("[DEBUG] Inserting product")
+
 	// obtain db client
 	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
 	if !ok {
@@ -88,7 +80,16 @@ func (p *Products) AddProducts(c *gin.Context) {
 	data.AddProduct(prod, dbClient)
 }
 
-func (p *Products) UpdateProducts(c *gin.Context) {
+
+// swagger:route PUT /products/{id} products editProduct
+// Modifies a product 
+//
+// Responses:
+//	201: noContentResponse
+//	404: errorResponse
+//
+// UpdateProduct modifies a product that already exists
+func (p *Products) UpdateProduct(c *gin.Context) {
 	p.l.Println("Handle PUT products")
 	
 	// obtain db client
@@ -122,7 +123,7 @@ func (p *Products) UpdateProducts(c *gin.Context) {
 // Responses:
 //	201: noContent
 
-// DeleteProducts deletes a product from the database
+// DeleteProductS deletes a product from the database
 func (p *Products) DeleteProduct(c *gin.Context) {
 	p.l.Println("Handle DELETE product")
 	

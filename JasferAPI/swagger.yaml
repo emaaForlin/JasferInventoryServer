@@ -2,6 +2,13 @@ basePath: /
 consumes:
 - application/json
 definitions:
+  GenericError:
+    properties:
+      message:
+        type: string
+        x-go-name: Message
+    type: object
+    x-go-package: github.com/emaaForlin/JasferInventoryServer/handlers
   Product:
     description: Product defines the structure for an API product
     properties:
@@ -39,8 +46,8 @@ definitions:
     type: object
     x-go-package: github.com/emaaForlin/JasferInventoryServer/data
 info:
-  description: Documentation for JasferInventoryAPI
-  title: of JasferInventoryAPI
+  description: Documentation for Products API
+  title: of Products API
   version: 1.0.0
 paths:
   /products:
@@ -50,6 +57,16 @@ paths:
       responses:
         "200":
           $ref: '#/responses/productsResponse'
+      tags:
+      - products
+    post:
+      description: Create a new product
+      operationId: createProducts
+      responses:
+        "200":
+          $ref: '#/responses/productsResponse'
+        "501":
+          $ref: '#/responses/errorResponse'
       tags:
       - products
   /products/{id}:
@@ -69,9 +86,23 @@ paths:
           $ref: '#/responses/noContent'
       tags:
       - products
+    put:
+      description: 'Modifies a product '
+      operationId: editProduct
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - products
 produces:
 - application/json
 responses:
+  errorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
   noContent:
     description: ""
   productsResponse:
