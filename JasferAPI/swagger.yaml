@@ -89,9 +89,17 @@ paths:
     put:
       description: 'Modifies a product '
       operationId: editProduct
+      parameters:
+      - description: The ID of the product to delete from database
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+        x-go-name: ID
       responses:
         "201":
-          $ref: '#/responses/noContentResponse'
+          $ref: '#/responses/noContent'
         "404":
           $ref: '#/responses/errorResponse'
       tags:

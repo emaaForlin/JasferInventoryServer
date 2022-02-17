@@ -17,9 +17,10 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+
 	"github.com/emaaForlin/JasferInventoryServer/data"
-	"gorm.io/gorm"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type Products struct {
@@ -41,6 +42,8 @@ func NewProduct(l *log.Logger) *Products {
 // GetProducts return the products from the database
 func (p *Products) GetProducts(c *gin.Context) {
 	p.l.Println("Handle GET Products")
+	c.Writer.Header().Add("Content-Type", "application/json")
+
 	// obtain db client
 	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
 	if !ok {
@@ -58,7 +61,7 @@ func (p *Products) GetProducts(c *gin.Context) {
 //
 // Responses:
 //	200: productsResponse
-//	501: errorResponse 
+//	501: errorResponse
 
 // AddProducts adds a new product to the database
 func (p *Products) AddProduct(c *gin.Context) {
@@ -70,7 +73,7 @@ func (p *Products) AddProduct(c *gin.Context) {
 		panic("error connection DB")
 	}
 
-	prod := &data.Product{} 
+	prod := &data.Product{}
 	err := prod.FromJSON(c.Request.Body)
 	if err != nil {
 		http.Error(c.Writer, "Unable to unmarshal json", http.StatusBadRequest)
@@ -80,18 +83,17 @@ func (p *Products) AddProduct(c *gin.Context) {
 	data.AddProduct(prod, dbClient)
 }
 
-
 // swagger:route PUT /products/{id} products editProduct
-// Modifies a product 
+// Modifies a product
 //
 // Responses:
-//	201: noContentResponse
+//	201: noContent
 //	404: errorResponse
 //
 // UpdateProduct modifies a product that already exists
 func (p *Products) UpdateProduct(c *gin.Context) {
 	p.l.Println("Handle PUT products")
-	
+
 	// obtain db client
 	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
 	if !ok {
@@ -126,7 +128,7 @@ func (p *Products) UpdateProduct(c *gin.Context) {
 // DeleteProductS deletes a product from the database
 func (p *Products) DeleteProduct(c *gin.Context) {
 	p.l.Println("Handle DELETE product")
-	
+
 	// obtain db client
 	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
 	if !ok {
