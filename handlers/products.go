@@ -56,6 +56,25 @@ func (p *Products) GetProducts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, lp)
 }
 
+func (p *Products) GetOneProduct(c *gin.Context) {
+	p.l.Println("Handle GET Products")
+	c.Writer.Header().Add("Content-Type", "application/json")
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		http.Error(c.Writer, "ID must be an int", http.StatusBadRequest)
+	}
+	// obtain db client
+	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
+	if !ok {
+		panic("error connection DB")
+	}
+
+	// fetch products from the data store
+	lp := data.GetOneProduct(dbClient, id)
+	// show the products as output
+	c.IndentedJSON(http.StatusOK, lp)
+}
+
 // swagger:route POST /products products createProducts
 // Create a new product
 //
