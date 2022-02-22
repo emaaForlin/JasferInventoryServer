@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
+	"syscall"
 	"time"
 
 	"github.com/emaaForlin/JasferInventoryServer/database"
@@ -53,7 +54,7 @@ func main() {
 
 	int_port, err := strconv.Atoi(port)
 	if err != nil {
-		fmt.Errorf("Database port needs to be an int", err)
+		fmt.Errorf("Database port needs to be an int %q", err)
 	}
 
 	db := database.NewConnection(host, int_port, user, pass, dbname)
@@ -99,21 +100,31 @@ func main() {
 	}
 
 	go func() {
-		err := s.ListenAndServe()
-		l.Printf("Server listening on %s", s.Addr)
-
-		if err != nil {
-			l.Fatal(err)
+		// service connections
+		if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
 		}
 	}()
 
-	sigChan := make(chan os.Signal)
-	signal.Notify(sigChan, os.Interrupt)
-	signal.Notify(sigChan, os.Kill)
+	// Wait for interrupt signal to gracefully shutdown the server with
+	// a timeout of 5 seconds.
+	quit := make(chan os.Signal)
+	// kill (no param) default send syscanll.SIGTERM
+	// kill -2 is syscall.SIGINT
+	// kill -9 is syscall. SIGKILL but can't be catch, so don't need add it
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("Shutdown Server ...")
 
-	sig := <-sigChan
-	l.Println("Received terminate, graceful shutdown", sig)
-
-	tc, _ := context.WithTimeout(context.Background(), 30*time.Second)
-	s.Shutdown(tc)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := s.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
+	}
+	// catching ctx.Done(). timeout of 5 seconds.
+	select {
+	case <-ctx.Done():
+		log.Println("timeout of 5 seconds.")
+	}
+	log.Println("Server exiting")
 }

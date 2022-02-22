@@ -9,6 +9,7 @@
 - Retrieve products `GET /products`
 
 #### Other features
+- New graceful shutdown method
 - Added reusing deleted IDs
 - Use a database
 
