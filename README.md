@@ -1,14 +1,14 @@
 # Jasfer Inventory Software
 
-### How to run it
+## How to run it
 
-#### Run the server with docker
+### Run the server with docker
 Soon available...
 
-#### Run the server on local
-First you need to have exported the `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS` and `DB_NAME` variables.
-Then run the `build` recipe with `make build` and the executable will be created in `bin/`
-After that you just need have to run it `./bin/app`
+### Run the server on local
+1. First you need to have exported the `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS` and `DB_NAME` variables.
+2. Then run the `build` recipe with `make build` and the executable will be created in `bin/`
+3. After that you just need have to run it `./bin/app`
 
 ### Changelog
 
