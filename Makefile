@@ -3,3 +3,9 @@ check_install:
 
 swagger: check_install
 	swagger generate spec -o ./swagger.yaml --scan-models
+
+test:
+	go test */*_test.go
+
+build: test swagger
+	go build -o bin/app
