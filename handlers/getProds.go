@@ -24,7 +24,10 @@ func (p *Products) GetProducts(c *gin.Context) {
 	}
 
 	// fetch products from the data store
-	lp := data.GetProducts(dbClient)
+	lp, err := data.GetProducts(dbClient)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+	}
 	// show the products as output
 	c.IndentedJSON(http.StatusOK, lp)
 }

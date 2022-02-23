@@ -19,7 +19,7 @@ func UpdateProduct(id int, p *Product, db *gorm.DB) error {
 	if p.ID != 0 && p.Name != "" && p.Price != 0 && p.SKU != "" && p.CreatedAt != p.UpdatedAt {
 		db.Save(&p)
 		productList[pos] = p
-		return nil
+		return db.Error
 	}
-	return fmt.Errorf("all values are needed")
+	return fmt.Errorf("some required values not found")
 }

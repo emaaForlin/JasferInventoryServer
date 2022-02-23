@@ -32,5 +32,8 @@ func (p *Products) AddProduct(c *gin.Context) {
 		p.l.Println(err, prod)
 		return
 	}
-	data.AddProduct(prod, dbClient)
+	err = data.AddProduct(prod, dbClient)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+	}
 }

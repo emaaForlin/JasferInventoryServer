@@ -23,7 +23,10 @@ func (p *Products) GetOneProduct(c *gin.Context) {
 	}
 
 	// fetch products from the data store
-	lp := data.GetOneProduct(dbClient, id)
+	lp, err := data.GetOneProduct(dbClient, id)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+	}
 	// show the products as output
 	c.IndentedJSON(http.StatusOK, lp)
 }

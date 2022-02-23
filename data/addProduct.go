@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func AddProduct(p *Product, db *gorm.DB) {
+func AddProduct(p *Product, db *gorm.DB) error {
 	p.ID = getNextID(db)
 	p.CreatedAt = time.Now().UTC()
 
@@ -22,4 +22,5 @@ func AddProduct(p *Product, db *gorm.DB) {
 	if prod.ID != 0 && prod.Name != "" && prod.Price != 0 {
 		db.Create(&prod)
 	}
+	return db.Error
 }

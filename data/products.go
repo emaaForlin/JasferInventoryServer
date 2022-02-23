@@ -79,7 +79,7 @@ func getNextID(db *gorm.DB) int {
 }
 
 func findProduct(id int, db *gorm.DB) (*Product, int, error) {
-	prods := GetProducts(db)
+	prods, _ := GetProducts(db)
 	for i, p := range prods {
 		if p.ID == id {
 			return p, i, nil
