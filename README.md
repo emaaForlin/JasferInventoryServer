@@ -6,7 +6,7 @@
 Soon available...
 
 ### Run the server on local
-1. First you need to have exported the `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS` and `DB_NAME` variables.
+1. First you need to export the `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS` and `DB_NAME` variables.
 2. Then run the `build` recipe with `make build` and the executable will be created in `bin/`
 3. After that you just need have to run it `./bin/app`
 
