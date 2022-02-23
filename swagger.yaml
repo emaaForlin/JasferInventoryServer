@@ -12,37 +12,37 @@ definitions:
   Product:
     description: Product defines the structure for an API product
     properties:
-      CreatedAt:
-        format: date-time
-        type: string
-      Description:
+      description:
         description: The description of the product
         maxLength: 1000
         type: string
-      ID:
+        x-go-name: Description
+      id:
         description: The id for the product
         format: int64
         minimum: 1
         type: integer
-      Name:
+        x-go-name: ID
+      name:
         description: The name of the product
         maxLength: 255
         type: string
-      Price:
+        x-go-name: Name
+      price:
         description: The price of the product
         format: float
         minimum: 0.01
         type: number
-      SKU:
+        x-go-name: Price
+      sku:
         description: The intern unique code of the product
+        maxLength: 8
         type: string
-      UpdatedAt:
-        format: date-time
-        type: string
+        x-go-name: SKU
     required:
-    - Name
-    - Price
-    - SKU
+    - name
+    - price
+    - sku
     type: object
     x-go-package: github.com/emaaForlin/JasferInventoryServer/data
 info:
@@ -87,7 +87,7 @@ paths:
       tags:
       - products
     put:
-      description: 'Modifies a product '
+      description: Modifies a product
       operationId: editProduct
       parameters:
       - description: The ID of the product to delete from database
