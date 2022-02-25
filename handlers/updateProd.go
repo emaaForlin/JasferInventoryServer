@@ -41,7 +41,7 @@ func (p *Products) UpdateProduct(c *gin.Context) {
 		return
 	}
 	if err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, map[string]string{"error": "Something bad has occurred, check is the required values"})
+		c.IndentedJSON(http.StatusInternalServerError, map[string]string{"error": "Something bad has occurred, check the required values"})
 		return
 	}
 }
