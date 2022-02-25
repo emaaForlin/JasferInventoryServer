@@ -26,8 +26,10 @@ func (p *Products) DeleteProduct(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 
 	err := data.DeleteProduct(id, dbClient)
+	if err == data.ErrProductNotFound {
+		c.IndentedJSON(http.StatusNotFound, map[string]string{"error": "Product not found"})
+	}
 	if err != nil {
-		http.Error(c.Writer, "Unable to delete unexistent product", http.StatusNotFound)
-		p.l.Println(err)
+		c.IndentedJSON(http.StatusInternalServerError, map[string]string{"error": "This product cannot be deleted"})
 	}
 }

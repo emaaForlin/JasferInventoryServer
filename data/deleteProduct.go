@@ -8,6 +8,6 @@ func DeleteProduct(id int, db *gorm.DB) error {
 		return err
 	}
 	// this deletes permanently the entry
-	db.Unscoped().Delete(&Product{}, id)
-	return db.Error
+	err = db.Unscoped().Delete(&Product{}, id).Error
+	return err
 }

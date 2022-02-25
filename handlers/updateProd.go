@@ -37,11 +37,11 @@ func (p *Products) UpdateProduct(c *gin.Context) {
 
 	err = data.UpdateProduct(id, prod, dbClient)
 	if err == data.ErrProductNotFound {
-		c.AbortWithError(http.StatusNotFound, err)
+		c.IndentedJSON(http.StatusNotFound, map[string]string{"error": "Product not found"})
 		return
 	}
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
+		c.IndentedJSON(http.StatusInternalServerError, map[string]string{"error": "Something bad has occurred, check is the required values"})
 		return
 	}
 }

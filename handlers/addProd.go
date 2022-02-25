@@ -34,6 +34,7 @@ func (p *Products) AddProduct(c *gin.Context) {
 	}
 	err = data.AddProduct(prod, dbClient)
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.IndentedJSON(http.StatusInternalServerError, map[string]string{"error": "Something bad has occurred, check where is the mistake"})
+		return
 	}
 }

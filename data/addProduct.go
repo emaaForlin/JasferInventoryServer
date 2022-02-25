@@ -7,7 +7,11 @@ import (
 )
 
 func AddProduct(p *Product, db *gorm.DB) error {
-	p.ID = getNextID(db)
+	id, err := getNextID(db)
+	if err != nil {
+		p.ID = 1
+	}
+	p.ID = id
 	p.CreatedAt = time.Now().UTC()
 
 	prod := Product{
@@ -20,7 +24,8 @@ func AddProduct(p *Product, db *gorm.DB) error {
 		UpdatedAt:   time.Date(1986, time.January, 1, 0, 0, 0, 0, time.Local),
 	}
 	if prod.ID != 0 && prod.Name != "" && prod.Price != 0 {
-		db.Create(&prod)
+		err := db.Create(&prod).Error
+		return err
 	}
-	return db.Error
+	return err
 }

@@ -64,18 +64,18 @@ func (p *Product) FromJSON(r io.Reader) error {
 	return e.Decode(p)
 }
 
-func getNextID(db *gorm.DB) int {
+func getNextID(db *gorm.DB) (int, error) {
 	prod := &Product{}
 	var p []Product
 	db.Find(&p)
 
 	for i := 1; i < len(productList); i++ {
 		if i != p[i-1].ID {
-			return i
+			return i, nil
 		}
 	}
 	db.Last(prod)
-	return prod.ID + 1
+	return prod.ID + 1, db.Error
 }
 
 func findProduct(id int, db *gorm.DB) (*Product, int, error) {

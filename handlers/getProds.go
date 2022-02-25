@@ -26,7 +26,8 @@ func (p *Products) GetProducts(c *gin.Context) {
 	// fetch products from the data store
 	lp, err := data.GetProducts(dbClient)
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.IndentedJSON(http.StatusInternalServerError, map[string]string{"error": "Something bad has occurred, check where is the mistake"})
+		return
 	}
 	// show the products as output
 	c.IndentedJSON(http.StatusOK, lp)

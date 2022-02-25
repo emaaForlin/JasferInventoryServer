@@ -11,10 +11,8 @@ Soon available...
 3. After that you just need have to run it `./bin/app`
 
 ### Changelog
-
-#### Other features
+- Error handling in all operations
 - Now it creates the table if not exists 
-- More error handling
 - New graceful shutdown method
 - Added reusing deleted IDs
 - Use a database

@@ -25,7 +25,8 @@ func (p *Products) GetOneProduct(c *gin.Context) {
 	// fetch products from the data store
 	lp, err := data.GetOneProduct(dbClient, id)
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.IndentedJSON(http.StatusNotFound, map[string]string{"error": "Product not found"})
+		return
 	}
 	// show the products as output
 	c.IndentedJSON(http.StatusOK, lp)

@@ -41,6 +41,7 @@ func CORSMiddleWare() gin.HandlerFunc {
 }
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
 	l := log.New(os.Stdout, "JISoftware-prototype: ", log.LstdFlags)
 	//create the product handler
 	productHandler := handlers.NewProduct(l)
@@ -59,11 +60,9 @@ func main() {
 
 	db := database.NewConnection(host, int_port, user, pass, dbname)
 	client, err := db.Connect()
-
 	if err != nil {
 		panic(err)
 	}
-
 	// initialize gin router
 	router := gin.Default()
 	router.Use(CORSMiddleWare())
