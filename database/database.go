@@ -15,7 +15,7 @@ type Connection struct {
 	dbname string
 }
 
-const tableScript string = `CREATE TABLE JIS.products (
+const creationScript string = `CREATE TABLE products (
 	ID int unsigned NOT NULL,
 	Name varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
 	Description varchar(256) DEFAULT NULL,
@@ -35,13 +35,16 @@ func (c *Connection) Connect() (*gorm.DB, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&autocommit=true&parseTime=True&loc=Local", c.user, c.pass, c.host, c.port, c.dbname)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if !checkTableExists("products", db) {
-		db.Exec(tableScript)
+		db.Exec(creationScript)
 	}
 	return db, err
 }
 
 func checkTableExists(tableName string, db *gorm.DB) bool {
-	var out string
-	db.Raw("SHOW TABLES;").Row().Scan(&out)
-	return out == tableName
+	var out []string
+	db.Raw("SHOW TABLES;").Scan(&out)
+	for _, i := range out {
+		return i == tableName
+	}
+	return false
 }
