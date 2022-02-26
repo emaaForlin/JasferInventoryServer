@@ -6,4 +6,4 @@ swagger: check_install
 
 # This test runs only in the CI workflow, if you run it in local maybe fail 
 test:
-	go test */*_test.go DB_HOST=${TEST_DB_HOST} DB_PORT=${TEST_DB_PORT} DB_USER=${TEST_DB_USER} DB_PASS=${TEST_DB_PASS} DB_NAME=${DB_NAME}
+	go test */*_test.go DB_HOST=${secrets.TEST_DB_HOST} DB_PORT=${secrets.TEST_DB_PORT} DB_USER=${secrets.TEST_DB_USER} DB_PASS=${secrets.TEST_DB_PASS} DB_NAME=${secrets.DB_NAME}
