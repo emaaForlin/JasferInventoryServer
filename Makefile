@@ -5,5 +5,5 @@ swagger: check_install
 	swagger generate spec -o ./swagger.yaml --scan-models
 
 # This test runs only in the CI workflow, if you run it in local maybe fail 
-test: swagger
+test:
 	go test */*_test.go
