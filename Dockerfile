@@ -2,6 +2,7 @@ FROM golang:1.17.7 AS builder
 ARG VERSION=dev
 WORKDIR /go/src/app
 COPY . .
+RUN make swagger
 RUN go build -o main -ldflags=-X=main.version=${VERSION} main.go
 
 FROM debian:stretch-slim
