@@ -11,6 +11,7 @@ Soon available...
 3. After that you just need have to run it `./bin/app`
 
 ### Changelog
+- Added some CI workflow
 - Added Dockerfile
 - Error handling in all operations
 - Now it creates the table if not exists 
