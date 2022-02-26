@@ -6,6 +6,3 @@ swagger: check_install
 
 test:
 	go test */*_test.go
-
-build: test swagger
-	go build -o bin/app
