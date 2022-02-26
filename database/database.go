@@ -17,7 +17,7 @@ type Connection struct {
 
 const creationScript string = `CREATE TABLE products (
 	ID int unsigned NOT NULL,
-	Name varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+	Name varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
 	Description varchar(256) DEFAULT NULL,
 	Price float DEFAULT NULL,
 	SKU varchar(8) DEFAULT NULL,
@@ -25,7 +25,7 @@ const creationScript string = `CREATE TABLE products (
 	updated_at timestamp NULL DEFAULT NULL,
 	deleted_at timestamp NULL DEFAULT NULL,
 	PRIMARY KEY (ID) USING BTREE
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;`
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;`
 
 func NewConnection(h string, p int, user string, pass string, db string) *Connection {
 	return &Connection{h, p, user, pass, db}
