@@ -1,9 +1,5 @@
 check_install:
-	which swagger || GO111MODULE=off && apt install -y apt-transport-https gnupg curl \
-	curl -1sLf 'https://dl.cloudsmith.io/public/go-swagger/go-swagger/gpg.2F8CB673971B5C9E.key' | apt-key add - \
-	curl -1sLf 'https://dl.cloudsmith.io/public/go-swagger/go-swagger/config.deb.txt?distro=debian&codename=any-version' > /etc/apt/sources.list.d/go-swagger-go-swagger.list \
-	apt update \
-	apt install swagger
+	which swagger || download_url=$(curl -s https://api.github.com/repos/go-swagger/go-swagger/releases/latest | jq -r '.assets[] | select(.name | contains("'"$(uname | tr '[:upper:]' '[:lower:]')"'_amd64")) | .browser_download_url') | curl -o /usr/local/bin/swagger -L'#' ${download_url} | chmod +x /usr/local/bin/swagger
 
 swagger: check_install
 	swagger generate spec -o ./swagger.yaml --scan-models
