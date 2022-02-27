@@ -1,0 +1,8 @@
+name: Main CI workflow
+on: [push, pull_request]
+jobs:
+  test: 
+    uses: "${{ github.repository }}/.github/workflows/test.yml"
+  build:
+    needs: test
+    uses: "${{ github.repository }}/.github/workflows/build-push.yml"
