@@ -3,7 +3,11 @@
 ## How to run it
 
 ### Run the server with docker
-Soon available...
+You can run the app inside a docker container (which is the best way).
+1. You just need to modify the `docker-compose.yml.example` at your liking.
+2. Remove the `.example` at the end of the file name
+3. Use `docker-compose up -d` or just `docker-compose up`
+4. Enjoy it.
 
 ### Run the server on local
 1. First you need to export the `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS` and `DB_NAME` variables.

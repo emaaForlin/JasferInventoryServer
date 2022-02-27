@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  server:
+    image: emaaforlin/jasferinventoryserver:latest
+    restart: on-failure
+    depends_on:
+    - mysql
+    ports:
+    - 9090:9090
+    environment:
+    - DB_HOST=mysql
+    - DB_PORT=3306
+    - DB_USER=user
+    - DB_PASS=secretpass
+    - DB_NAME=testdb
+    links:
+    - mysql
+  
+  mysql:
+    image: mysql
+    ports:
+    - 3306:3306
+    environment:
+    - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    - MYSQL_USER=user
+    - MYSQL_PASSWORD=secretpass
+    - MYSQL_DATABASE=testdb
