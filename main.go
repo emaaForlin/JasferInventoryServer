@@ -45,6 +45,8 @@ var version = "dev"
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	l := log.New(os.Stdout, "JISoftware-prototype: ", log.LstdFlags)
+	l.Printf("Version: %s\n", version)
+
 	//create the product handler
 	productHandler := handlers.NewProduct(l)
 

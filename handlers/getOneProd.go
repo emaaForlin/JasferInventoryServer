@@ -10,7 +10,7 @@ import (
 )
 
 func (p *Products) GetOneProduct(c *gin.Context) {
-	p.l.Println("Handle GET Products")
+	p.l.Printf("[INFO] Handle GetOneProduct")
 	c.Writer.Header().Add("Content-Type", "application/json")
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -19,12 +19,14 @@ func (p *Products) GetOneProduct(c *gin.Context) {
 	// obtain db client
 	dbClient, ok := c.MustGet("dbConn").(*gorm.DB)
 	if !ok {
+		p.l.Println("[ERROR] Error connection to the database")
 		panic("error connection DB")
 	}
 
 	// fetch products from the data store
 	lp, err := data.GetOneProduct(dbClient, id)
 	if err != nil {
+		p.l.Printf("[ERROR] Something was wrong %s\n", err)
 		c.IndentedJSON(http.StatusNotFound, map[string]string{"error": "Product not found"})
 		return
 	}
