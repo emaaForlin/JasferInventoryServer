@@ -1,0 +1,9 @@
+name: Test the code
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run unit tests
+        run: make test DB_HOST=${{ secrets.TEST_DB_HOST }} DB_USER=${{ secrets.TEST_DB_USER }} DB_PASS=${{ secrets.TEST_DB_PASS }} DB_NAME=${{ secrets.TEST_DB_NAME }} DB_PORT=${{ secrets.TEST_DB_PORT }}
