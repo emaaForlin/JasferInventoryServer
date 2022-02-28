@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   test: 
     uses: "./.github/workflows/test.yml"
-    with:
+    secrets:
       db_host: ${{ secrets.TEST_DB_HOST }}
       db_name: ${{ secrets.TEST_DB_NAME }}
       db_user: ${{ secrets.TEST_DB_USER }}
