@@ -1,5 +1,5 @@
 name: Main CI workflow
-on: workflow_call
+on: [push, pull_request]
 jobs:
   test: 
     uses: "${{ github.repository }}/.github/workflows/test.yml@latest"
