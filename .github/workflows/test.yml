@@ -1,9 +1,26 @@
 name: Test the code
-on: workflow_call
+on: 
+  workflow_call:
+    inputs:
+      db_host:
+        required: true
+        type: string
+      db_port:
+        required: true
+        type: number
+      db_user:
+        required: true
+        type: string
+      db_pass:
+        required: true
+        type: string
+      db_name:
+        required: true
+        type: string
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Run unit tests
-        run: make test DB_HOST=${{ secrets.TEST_DB_HOST }} DB_USER=${{ secrets.TEST_DB_USER }} DB_PASS=${{ secrets.TEST_DB_PASS }} DB_NAME=${{ secrets.TEST_DB_NAME }} DB_PORT=${{ secrets.TEST_DB_PORT }}
+        run: make test DB_HOST=${{ inputs.db_host }} DB_USER=${{ inputs.db_user }} DB_PASS=${{ inputs.db_pass }} DB_NAME=${{ inputs.db_name }} DB_PORT=${{ inputs.db_port}}
