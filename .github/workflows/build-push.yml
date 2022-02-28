@@ -6,6 +6,8 @@ on:
         required: true
       DOCKERHUB_TOKEN:
         required: true
+    tags:
+      - v*.*.*
 jobs:
   build:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags')
