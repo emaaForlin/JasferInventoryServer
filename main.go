@@ -15,6 +15,7 @@ import (
 	"github.com/emaaForlin/JasferInventoryServer/handlers"
 	"github.com/gin-gonic/gin"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 )
 
@@ -40,13 +41,16 @@ func CORSMiddleWare() gin.HandlerFunc {
 	}
 }
 
-var version = "dev"
+var version string = "dev"
 
 func main() {
 	gin.SetMode(gin.ReleaseMode)
-	l := log.New(os.Stdout, "JISoftware-prototype: ", log.LstdFlags)
+	l := log.New(os.Stdout, "JISoftware: ", log.LstdFlags)
 	l.Printf("Version: %s\n", version)
-
+	err := godotenv.Load()
+	if err != nil {
+		l.Printf("Error loading .env %q", err)
+	}
 	//create the product handler
 	productHandler := handlers.NewProduct(l)
 
@@ -59,7 +63,7 @@ func main() {
 
 	int_port, err := strconv.Atoi(port)
 	if err != nil {
-		fmt.Errorf("Database port needs to be an int %q", err)
+		fmt.Errorf("database port needs to be an int %q", err)
 	}
 
 	db := database.NewConnection(host, int_port, user, pass, dbname)
@@ -69,6 +73,8 @@ func main() {
 	}
 	// initialize gin router
 	router := gin.Default()
+
+	// Add the middlewares
 	router.Use(CORSMiddleWare())
 	router.Use(dbMiddleWare(client))
 
