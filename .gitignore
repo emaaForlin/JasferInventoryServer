@@ -4,3 +4,4 @@ bin/
 show-vars.sh
 docker-compose.yml
 docker-compose.yaml
+swagger

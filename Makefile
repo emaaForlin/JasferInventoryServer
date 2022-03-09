@@ -7,3 +7,6 @@ swagger: check_install
 # This test runs only in the CI workflow, if you run it in local maybe fail 
 test:
 	go test */*_test.go
+
+build: swagger
+	go build -o ./bin/app

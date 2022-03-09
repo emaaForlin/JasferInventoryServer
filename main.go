@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -44,7 +43,11 @@ func CORSMiddleWare() gin.HandlerFunc {
 var version string = "dev"
 
 func main() {
-	gin.SetMode(gin.ReleaseMode)
+	if version == "dev" {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	l := log.New(os.Stdout, "JISoftware: ", log.LstdFlags)
 	l.Printf("Version: %s\n", version)
 	err := godotenv.Load()
@@ -63,7 +66,7 @@ func main() {
 
 	int_port, err := strconv.Atoi(port)
 	if err != nil {
-		fmt.Errorf("database port needs to be an int %q", err)
+		log.Println("[ERROR] DB Port must to be an integer")
 	}
 
 	db := database.NewConnection(host, int_port, user, pass, dbname)
